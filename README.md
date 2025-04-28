@@ -1,1 +1,1 @@
-# NexumAI
+# Nexum AI Project
