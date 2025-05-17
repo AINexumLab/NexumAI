@@ -32,13 +32,13 @@ jobs:
 
     - name: Build executable
       run: |
-        pyinstaller --clean --noconfirm MyApp.spec
-      # Output ends up in dist/MyApp[.exe|.app|]
+        pyinstaller --clean --noconfirm NexumAI.spec
+      # Output ends up in dist/NexumAI[.exe|.app|]
 
     - name: Archive artifact
       uses: actions/upload-artifact@v4
       with:
-        name: MyApp-${{ matrix.os }}
+        name: NexumAI-${{ matrix.os }}
         path: |
           dist/**
           !dist/**/*.log
