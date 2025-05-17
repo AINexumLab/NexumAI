@@ -1,0 +1,11 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+core/__pycache__/
+widgets/__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc 
+
+# Ignore .p files (e.g., trainer_widget.p if it's not meant to be tracked)
+*.p
