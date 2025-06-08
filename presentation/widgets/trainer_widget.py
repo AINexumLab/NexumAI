@@ -1,4 +1,6 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QComboBox, QLabel, QFileDialog, QMessageBox
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QComboBox, QLabel, QFileDialog, QMessageBox
+from PyQt6.QtCore import QSize, Qt
+from presentation.widgets.setting_window import SettingsWindow
 from infrastructure.data.dataset_loader import DatasetLoader
 from core.model_trainer import ModelTrainer
 from core.model_saver import save_model_to_file
@@ -69,7 +71,7 @@ class TrainerWidget(QWidget):
         establishing signal-slot connections for interactive workflow control.
         """
         layout = QVBoxLayout()
-
+        
         self.model_label = QLabel("Choose Task Type:")
         layout.addWidget(self.model_label)
 
@@ -114,6 +116,29 @@ class TrainerWidget(QWidget):
         self.restart_label.setFixedHeight(100)
         layout.addWidget(self.restart_label)
 
+        settings_button = QPushButton("⛭")
+        settings_button.setFixedSize(QSize(25, 25))
+        settings_button.setStyleSheet("""
+            QPushButton {
+                font-size: 24px;
+                padding: 0px;
+                margin: 0px;
+                border-radius: 4px;
+                border: none;
+            }
+            QPushButton:hover {
+                background-color: #808080;
+            }
+        """)
+        settings_button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        settings_button.clicked.connect(self.open_settings)
+
+        settings_layout = QHBoxLayout()
+        settings_layout.addStretch()
+        settings_layout.addWidget(settings_button)
+        settings_layout.addStretch()
+        layout.addLayout(settings_layout)
+        
         layout.addStretch()
         self.setLayout(layout)
         self.setWindowTitle("ML Model Trainer")
@@ -273,3 +298,7 @@ class TrainerWidget(QWidget):
                 self.save_button.setEnabled(False)
                 print("Model saved successfully.")
                 self.restart_label.setVisible(True)
+                
+    def open_settings(self):
+        self.settings_window = SettingsWindow()
+        self.settings_window.show()
