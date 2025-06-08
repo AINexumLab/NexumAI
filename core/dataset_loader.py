@@ -1,12 +1,13 @@
+import os
 import pandas as pd
 from torchvision import datasets, transforms
-import os
 
 class DatasetLoader:
-    def __init__(self, file_path: str, data_type: str, **kwargs):
+    def __init__(self, file_path: str, data_type: str, transform, **kwargs):
         self.file_path = file_path
         self.data_type = data_type.lower()
         self.kwargs = kwargs
+        self.transform = transform
         self.data = None
 
     def load(self):
@@ -26,5 +27,5 @@ class DatasetLoader:
     def _load_image_folder(self):
         if not os.path.isdir(self.file_path):
             raise FileNotFoundError(f"Image folder not found: {self.file_path}")
-        transform = self.kwargs.get("transform", transforms.ToTensor())
-        return datasets.ImageFolder(root=self.file_path, transform=transform)
+
+        return datasets.ImageFolder(root=self.file_path, transform=self.transform)
