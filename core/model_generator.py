@@ -1,4 +1,5 @@
 from tensorflow.keras import layers, models
+from tensorflow.keras.optimizers import Adam
 from sklearn.svm import SVC
 
 class ModelGenerator:
@@ -38,8 +39,8 @@ class ModelGenerator:
         model.add(layers.Dense(64, activation='relu'))
         model.add(layers.Dense(num_classes, activation='sigmoid' if num_classes == 1 else 'softmax'))
 
-        model.compile(optimizer='adam',
-                      loss='binary_crossentropy' if num_classes == 1 else 'categorical_crossentropy',
+        model.compile(optimizer=Adam(),
+                      loss='sparse_categorical_crossentropy',
                       metrics=['accuracy'])
         return model
     

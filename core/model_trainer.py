@@ -2,6 +2,8 @@ from torch.utils.data import DataLoader
 import pandas as pd
 from torchvision.datasets import ImageFolder
 from core.model_generator import ModelGenerator
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
+
 class ModelTrainer:
     def __init__(self, dataset):
         self.dataset = dataset
@@ -39,10 +41,24 @@ class ModelTrainer:
     
     def _train_image_classification_model(self, task_type: str):
         if task_type == "CNN (Recommended)":
-            input_shape = (28, 28, 1)  # example shape
-            model = ModelGenerator.get_image_classification_model(task_type, input_shape)
-            model.fit(self.x, self.y, epochs=1, verbose=1)
+            input_shape = (128, 128, 1)
+            model = ModelGenerator.get_image_classification_model(task_type, input_shape, num_classes=3)
+            print(model.summary())
+            
+            if self.x.shape[1] == 1:
+                self.x = self.x.transpose(0, 2, 3, 1)
+    
+            model.fit(self.x, self.y,
+                      epochs=1,
+                      validation_split=0.15, 
+                      shuffle=True, 
+                      verbose=1,
+                      callbacks=[
+                          ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=2, min_lr=1e-6)
+                          ]
+                      )
             print("Trained CNN for image classification.")
+            
             return model
 
         elif task_type == "SVM":

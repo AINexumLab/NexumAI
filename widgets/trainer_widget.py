@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QComboBox, QLabel, QFileDialog, QLayout, QMessageBox
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QComboBox, QLabel, QFileDialog, QLayout, QMessageBox, QTextEdit
 from core.dataset_loader import DatasetLoader
 from core.model_trainer import ModelTrainer
 from core.model_saver import save_model_to_file
@@ -69,6 +69,12 @@ class TrainerWidget(QWidget):
         self.save_button.setEnabled(False)
         layout.addWidget(self.save_button)
 
+        self.restart_label = QLabel("Model saved successfully. \n\nTo train a new model, kindly initiate a fresh workflow by restarting the application.")
+        self.restart_label.setWordWrap(True)
+        self.restart_label.setVisible(False)
+        self.restart_label.setFixedHeight(100)
+        layout.addWidget(self.restart_label)
+        
         layout.addStretch()
         self.setLayout(layout)
         self.setWindowTitle("ML Model Trainer")
@@ -91,36 +97,38 @@ class TrainerWidget(QWidget):
             self.algorithm_combobox.model().item(0).setEnabled(False)
             self.algorithm_combobox.addItems(algorithms)
             self.algorithm_combobox.setCurrentIndex(0)
+            self.load_button.setEnabled(False)
         else:
             self.algorithm_label.setVisible(False)
             self.algorithm_combobox.setVisible(False)
-
+            self.load_button.setEnabled(True)
+        self.load_button.setText("Load Dataset")
+        self.train_button.setEnabled(False)
         self.adjustSize()
 
     def style_combobox_on_selection(self, index):
         pass
     
-    def model_selected(self, index):
-        self.load_button.setEnabled(True)
-            
     def algorithm_selected(self, index):
         if index > 0:
             self.load_button.setEnabled(True)
+            self.load_button.setText("Load Dataset")
+        self.train_button.setEnabled(False)
             
     def load_dataset(self):
         task_type = self.model_combobox.currentText()
         folder_path = None
-    
+
         if task_type in ["Image Classification", "Image Segmentation"]:
             folder_path = QFileDialog.getExistingDirectory(self, "Select Image Folder", "")
             if folder_path:
                 # Define transform based on task type
                 transform = transforms.Compose([
-                    transforms.Resize((128, 128)),  # or task-specific shape
-                    transforms.Grayscale(num_output_channels=1),  # or 3 for RGB
+                    transforms.Resize((128, 128)),
+                    transforms.Grayscale(num_output_channels=1),
                     transforms.ToTensor()
                 ])
-    
+
                 loader = DatasetLoader(
                     folder_path,
                     data_type="image_folder",
@@ -128,25 +136,26 @@ class TrainerWidget(QWidget):
                 )
                 self.dataset = loader.load()
                 print(f"Image folder loaded from {folder_path}")
-    
+
         elif task_type == "Voice Classification":
             folder_path = QFileDialog.getExistingDirectory(self, "Select Audio Folder", "")
             if folder_path:
                 loader = DatasetLoader(folder_path, data_type="audio_folder")
                 self.dataset = loader.load()
                 print(f"Audio folder loaded from {folder_path}")
-    
+
         else:
             QMessageBox.warning(
                 self,
                 "Unsupported Task",
                 f"The selected task type '{task_type}' is not supported for dataset loading.",
             )
-    
+
         if self.dataset:
             self.load_button.setText("Loaded Successfully")
             self.load_button.setEnabled(False)
             self.train_button.setEnabled(True)
+            print("Dataset loaded successfully.")
 
     def train_model(self):
         if self.dataset is None:
@@ -156,16 +165,18 @@ class TrainerWidget(QWidget):
                 "Please load a dataset first.",
             )
             return
-
-        model_type = self.model_combobox.currentText()
-        task_type = self.algorithm_combobox.currentText()
-        ModelTrainer(self.dataset).train(model_type=model_type, task_type=task_type)
-
-        print("Model training complete.")
         
+        self.model_combobox.setEnabled(False)
+        model_type = self.model_combobox.currentText()
+        self.algorithm_combobox.setEnabled(False)
+        task_type = self.algorithm_combobox.currentText()
+        self.model = ModelTrainer(self.dataset).train(model_type=model_type, task_type=task_type)
+
         if self.model:
-            print("Model training complete.")
+            self.train_button.setText("Trained Successfully")
+            self.train_button.setEnabled(False)
             self.save_button.setEnabled(True)
+            print("Model training complete.")
 
     def save_model(self):
         if self.model:
@@ -173,4 +184,7 @@ class TrainerWidget(QWidget):
                 self, "Save Model", "", "All Files (*)")
             if file_path:
                 save_model_to_file(self.model, file_path)
-                print(f"Model saved to {file_path}")
+                self.save_button.setText("Saved Successfully")
+                self.save_button.setEnabled(False)
+                print("Model saved successfully.")
+                self.restart_label.setVisible(True)
