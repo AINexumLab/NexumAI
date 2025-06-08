@@ -1,6 +1,8 @@
 import sys
+import os
 from PyQt6.QtWidgets import QApplication
-from widgets.trainer_widget import TrainerWidget
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from presentation.widgets.trainer_widget import TrainerWidget
 
 def main():
     app = QApplication(sys.argv)

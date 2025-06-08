@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QComboBox, QLabel, QFileDialog, QMessageBox
-from core.dataset_loader import DatasetLoader
+from infrastructure.data.dataset_loader import DatasetLoader
 from core.model_trainer import ModelTrainer
 from core.model_saver import save_model_to_file
 from core.model_selector import ModelSelector
