@@ -71,6 +71,11 @@ jobs:
       - name: Upload installers to release
         uses: softprops/action-gh-release@v2
         with:
-          files: installers/**/*
+          files: |
+            installers/NexumAI-macos-latest
+            installers/NexumAI-ubuntu-latest
+            installers/NexumAI-windows-latest
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+          
