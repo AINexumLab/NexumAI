@@ -66,11 +66,11 @@ jobs:
           name: ${{ github.event.release.name }}
           body: ${{ github.event.release.body }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: Upload installers to release
         uses: softprops/action-gh-release@v2
         with:
           files: installers/**/*
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
