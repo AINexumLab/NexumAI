@@ -7,6 +7,7 @@ from presentation.widgets.trainer_widget import TrainerWidget
 def main():
     app = QApplication(sys.argv)
     window = TrainerWidget()
+    window.setWindowOpacity(.80)
     window.show()
     sys.exit(app.exec())
 

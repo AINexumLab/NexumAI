@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QComboBox, QLabel, QFileDialog, QMessageBox
 from PyQt6.QtCore import QSize, Qt
+from PyQt6.QtGui import QPainter, QColor
 from presentation.widgets.setting_window import SettingsWindow
 from infrastructure.data.dataset_loader import DatasetLoader
 from core.model_trainer import ModelTrainer
@@ -8,54 +9,6 @@ from core.model_selector import ModelSelector
 from torchvision import transforms
 
 class TrainerWidget(QWidget):
-    """
-    A QWidget-derived graphical interface facilitating the end-to-end workflow
-    for training machine learning models. This widget integrates model selection,
-    algorithm choice, dataset loading, model training, and model saving functionalities,
-    tailored primarily for image and voice classification/segmentation tasks.
-
-    Attributes
-    ----------
-    dataset : Any
-        Holds the loaded dataset after user selection, to be consumed during training.
-    model : Any
-        Reference to the trained model instance after the training phase completes.
-    model_label : QLabel
-        Label prompting the user to choose the task type (e.g., classification, segmentation).
-    model_combobox : QComboBox
-        Dropdown menu populated with task types/models available for training.
-    algorithm_label : QLabel
-        Label prompting the user to select a specific algorithm based on the chosen task.
-    algorithm_combobox : QComboBox
-        Dropdown menu dynamically populated with algorithms compatible with the selected task.
-    load_button : QPushButton
-        Button to trigger the dataset loading dialog and process the chosen dataset.
-    train_button : QPushButton
-        Button to commence model training on the loaded dataset.
-    save_button : QPushButton
-        Button to save the trained model to disk.
-    restart_label : QLabel
-        Informative label guiding the user to restart the application post model saving.
-
-    Methods
-    -------
-    init_ui()
-        Initializes and configures all UI components and their layout within the widget.
-    update_model_section(index: int)
-        Dynamically updates the algorithm selection UI elements based on the selected task type.
-    style_combobox_on_selection(index: int)
-        Placeholder method for styling combobox elements upon user interaction (currently no-op).
-    algorithm_selected(index: int)
-        Enables dataset loading when a valid algorithm is selected.
-    load_dataset()
-        Launches a dialog to select dataset folders, loads datasets with task-specific
-        preprocessing, and prepares the system for training.
-    train_model()
-        Triggers the training process for the selected model and algorithm on the loaded dataset.
-    save_model()
-        Opens a file dialog to save the trained model to disk and updates the UI accordingly.
-    """
-
     def __init__(self):
         """
         Initializes the TrainerWidget instance, sets up attributes, and invokes UI setup.
@@ -141,8 +94,20 @@ class TrainerWidget(QWidget):
         
         layout.addStretch()
         self.setLayout(layout)
-        self.setWindowTitle("ML Model Trainer")
+        self.setWindowTitle("NexumAI")
 
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        painter.fillRect(self.rect(), QColor(0, 0, 0, 0))
+        color = QColor(40, 40, 80, int(0.6 * 255))
+        painter.fillRect(self.rect(), color)
+                
+    def open_settings(self):
+        self.settings_window = SettingsWindow()
+        self.settings_window.setWindowOpacity(.80)
+        self.settings_window.show()
+        
     def update_model_section(self, index):
         """
         Adjusts the visibility and content of the algorithm selection UI elements
@@ -298,7 +263,3 @@ class TrainerWidget(QWidget):
                 self.save_button.setEnabled(False)
                 print("Model saved successfully.")
                 self.restart_label.setVisible(True)
-                
-    def open_settings(self):
-        self.settings_window = SettingsWindow()
-        self.settings_window.show()
