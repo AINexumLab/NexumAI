@@ -11,5 +11,5 @@ pip install -r requirements.txt
 From the root directory (NexumAI/), execute:
 
 ```bash
-python main.py
+python app/main.py
 ```
