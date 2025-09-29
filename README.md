@@ -1,6 +1,6 @@
 # NexumAI
 
-NexumAI is a powerful machine learning application that provides a user-friendly interface for training various types of models, including image classification, image segmentation, and voice classification.
+NexumAI is a machine learning application that provides a user-friendly interface for training various types of models, including image classification, image segmentation, and voice classification.
 
 <p align="center"> <img src="documentation/dashboard.png" width=400"/> </p>
 
