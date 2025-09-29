@@ -2,7 +2,7 @@
 
 NexumAI is a powerful machine learning application that provides a user-friendly interface for training various types of models, including image classification, image segmentation, and voice classification.
 
-<p style="display: flex; justify-content: center;"> <img src="documentation/dashboard.png" width=400"/> </p>
+<p align="center"> <img src="documentation/dashboard.png" width=400"/> </p>
 
 ## Requirements
 
@@ -91,33 +91,33 @@ NexumAI/
 The project includes comprehensive unit tests and UI tests.
 
 Model Generator Tests:
-<p style="display: flex; justify-content: center;"> <img src="documentation/generator-tests.png" width=700"/> </p>
+<p align="center"> <img src="documentation/generator-tests.png" width=700"/> </p>
 
 Model Trainer Tests:
-<p style="display: flex; justify-content: center;"> <img src="documentation/trainer-tests.png" width=700"/> </p>
+<p align="center"> <img src="documentation/trainer-tests.png" width=700"/> </p>
 
 UI Tests:
-<p style="display: flex; justify-content: center;"> <img src="documentation/uitests.png" width=700"/> </p>
+<p align="center"> <img src="documentation/uitests.png" width=700"/> </p>
 
 ## Accessibility
 
 Light/Dark Mode
-<div style="display: flex; gap: 0px; justify-content: center;">
+<p align="center">
     <img src="documentation/light-mode.png" width="400" />
     <img src="documentation/dark-mode.png" width="400" />
-</div>
+</p>
 
 Font Size
-<p style="display: flex; justify-content: center;"> <img src="documentation/settings.png" width=300"/> </p>
-<div style="display: flex; gap: 0px; justify-content: center;">
-    <img src="documentation/small-size.png" width="250" />
-    <img src="documentation/medium-size.png" width="250" />
-    <img src="documentation/large-size.png" width="250" />
-</div>
+<p align="center"> <img src="documentation/settings.png" width="300" /> </p>
+<p align="center">
+  <img src="documentation/small-size.png" width="250" />
+  <img src="documentation/medium-size.png" width="250" />
+  <img src="documentation/large-size.png" width="250" />
+</p>
 
 ## Sequence Diagram
 
-<p style="display: flex; justify-content: center;"> <img src="documentation/sequence-diagram.png" width=700"/> </p>
+<p align="center"> <img src="documentation/sequence-diagram.png" width=700"/> </p>
 
 ## License
 
