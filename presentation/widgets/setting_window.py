@@ -39,7 +39,7 @@ class SettingsWindow(QWidget):
         font.setPointSize(size)
         QApplication.instance().setFont(font)
 
-        settings = QSettings("YourCompany", "YourApp")
+        settings = QSettings("AINexumLab", "NexumAI")
         settings.setValue("fontSize", size)
         
     def paintEvent(self, event):
